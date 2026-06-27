@@ -39,6 +39,24 @@
 .nbutton:active {
     background-color: #2a2d3e;
 }
+
+.calcbutton {
+    border-radius: 50%;
+    border: none;
+    font-weight: bold;
+    font-size: 50px;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto;
+    background-color: #f5a623;
+    color: #ffffff;
+}
+.calcbutton:hover {
+     background-color: #ffb347;
+}
+.calcbutton:active {
+     background-color: #e8960c;
+}
 #display-box {
     border: 1px solid;
     width: 600px;

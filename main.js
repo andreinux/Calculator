@@ -36,3 +36,48 @@ for (let i=0; i<operatorButtons.length  ; i++) {
         currentDisplay.textContent = operatorInput;
     })
 }
+
+
+
+function add(a, b) {
+    return a+ b;
+}
+
+function subtract(a,b) {
+    return a-b;
+}
+
+function multiply (a,b) {
+   return a *b;
+}
+
+function divide (a,b) {
+    return a/b
+}
+
+
+
+
+calculateBtn.addEventListener("click" , () => {
+    secondInput = currentDisplay.textContent; 
+    let fnum = Number(firstInput);
+    let snum = Number(secondInput);
+    currentDisplay.textContent="";  
+
+    if(operatorInput === "+") {
+        result = add(fnum,snum);
+    }else if (operatorInput === "—") {
+        result = subtract(fnum,snum);
+    }else if (operatorInput === "X"){
+        result = multiply(fnum,snum);
+    }else if (operatorInput === "÷"){
+        result = divide(fnum, snum);
+    }else;
+
+    if (Number.isInteger(result)) {
+        currentDisplay.textContent = result;
+    }else {
+        currentDisplay.textContent= result.toFixed(4);
+    }
+})
+
