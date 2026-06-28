@@ -10,6 +10,7 @@ let firstInput = null;
 let operatorInput = null;
 let secondInput = null;
 let replaceDisplay= true;
+let savedOperator = false;
 
 //number input
 for (let i=0; i<nbuttons.length; i++) {
@@ -32,8 +33,9 @@ for (let i=0; i<operatorButtons.length  ; i++) {
 
         firstInput = currentDisplay.textContent;
         replaceDisplay = true;
-        operatorInput = e.target.textContent;
-        currentDisplay.textContent = operatorInput;
+         operatorInput = e.target.textContent;
+         currentDisplay.textContent = operatorInput;
+        
     })
 }
 
@@ -72,12 +74,34 @@ calculateBtn.addEventListener("click" , () => {
         result = multiply(fnum,snum);
     }else if (operatorInput === "÷"){
         result = divide(fnum, snum);
-    }else;
+    }
 
     if (Number.isInteger(result)) {
         currentDisplay.textContent = result;
+        secondInput=null;
+           firstInput = null;
+          operatorInput = null;
     }else {
         currentDisplay.textContent= result.toFixed(4);
+        secondInput=null;
+           firstInput = null;
+    operatorInput = null;
     }
 })
 
+let resetBtn = document.querySelector("#reset");
+
+resetBtn.addEventListener("click", ()=> {
+    firstInput = null;
+    operatorInput = null;
+    secondInput = null;
+    replaceDisplay= true;
+    currentDisplay.textContent= "0";
+})
+
+let eraseBtn = document.querySelector("#erase");
+
+eraseBtn.addEventListener("click" , ()=> {
+    currentDisplay.textContent  = currentDisplay.textContent.slice(0,-1);
+
+})
