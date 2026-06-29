@@ -12,6 +12,7 @@ let secondInput = null;
 let replaceDisplay= true;
 let savedOperator = false;
 
+
 //number input
 for (let i=0; i<nbuttons.length; i++) {
     nbuttons[i].addEventListener("click" , (e)=> {
@@ -35,6 +36,7 @@ for (let i=0; i<operatorButtons.length  ; i++) {
         replaceDisplay = true;
          operatorInput = e.target.textContent;
          currentDisplay.textContent = operatorInput;
+         
         
     })
 }
@@ -54,16 +56,22 @@ function multiply (a,b) {
 }
 
 function divide (a,b) {
+    if (b === 0) {
+        return "error";
+    } else {
     return a/b
+    }
 }
 
 
 
-
+//calculate
 calculateBtn.addEventListener("click" , () => {
     secondInput = currentDisplay.textContent; 
     let fnum = Number(firstInput);
     let snum = Number(secondInput);
+    let result = 0;
+
     currentDisplay.textContent="";  
 
     if(operatorInput === "+") {
@@ -81,7 +89,10 @@ calculateBtn.addEventListener("click" , () => {
         secondInput=null;
            firstInput = null;
           operatorInput = null;
-    }else {
+    }else if (result === "error") {
+        currentDisplay.textContent = "error";
+    }
+    else {
         currentDisplay.textContent= result.toFixed(4);
         secondInput=null;
            firstInput = null;
@@ -102,6 +113,18 @@ resetBtn.addEventListener("click", ()=> {
 let eraseBtn = document.querySelector("#erase");
 
 eraseBtn.addEventListener("click" , ()=> {
-    currentDisplay.textContent  = currentDisplay.textContent.slice(0,-1);
+     if (currentDisplay.textContent === "error") {
+           currentDisplay.textContent = operatorInput;
+        replaceDisplay = true;
+    }
+    
+    if (replaceDisplay) return;
+    currentDisplay.textContent = currentDisplay.textContent.slice(0,-1);
 
-})
+    if(currentDisplay.textContent === "") {
+        currentDisplay.textContent = operatorInput;
+        replaceDisplay = true;
+    }
+
+   
+});
