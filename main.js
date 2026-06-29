@@ -10,12 +10,17 @@ let firstInput = null;
 let operatorInput = null;
 let secondInput = null;
 let replaceDisplay= true;
-let savedOperator = false;
-
+let showingResult = false;
+let result = 0;
+let canCalculate = false;
 
 //number input
 for (let i=0; i<nbuttons.length; i++) {
     nbuttons[i].addEventListener("click" , (e)=> {
+        if (showingResult) {
+    showingResult = false;
+    replaceDisplay = true;
+}
 
         if (replaceDisplay) {
         currentDisplay.textContent="";
@@ -23,6 +28,7 @@ for (let i=0; i<nbuttons.length; i++) {
         
     }
     currentDisplay.textContent +=(e.target.textContent);
+    canCalculate = true;
         
     })  
 }
@@ -67,12 +73,17 @@ function divide (a,b) {
 
 //calculate
 calculateBtn.addEventListener("click" , () => {
+
+    if (!canCalculate) return; 
+    
     secondInput = currentDisplay.textContent; 
     let fnum = Number(firstInput);
     let snum = Number(secondInput);
-    let result = 0;
+   
 
     currentDisplay.textContent="";  
+
+    
 
     if(operatorInput === "+") {
         result = add(fnum,snum);
@@ -86,20 +97,23 @@ calculateBtn.addEventListener("click" , () => {
 
     if (Number.isInteger(result)) {
         currentDisplay.textContent = result;
-        secondInput=null;
-           firstInput = null;
-          operatorInput = null;
+        
     }else if (result === "error") {
         currentDisplay.textContent = "error";
     }
     else {
         currentDisplay.textContent= result.toFixed(4);
-        secondInput=null;
-           firstInput = null;
-    operatorInput = null;
-    }
+        
+    } 
+
+    canCalculate=false;
+    showingResult = true;
+
+  
 })
 
+
+//reset C
 let resetBtn = document.querySelector("#reset");
 
 resetBtn.addEventListener("click", ()=> {
@@ -112,19 +126,46 @@ resetBtn.addEventListener("click", ()=> {
 
 let eraseBtn = document.querySelector("#erase");
 
+
 eraseBtn.addEventListener("click" , ()=> {
+
      if (currentDisplay.textContent === "error") {
-           currentDisplay.textContent = operatorInput;
-        replaceDisplay = true;
+           currentDisplay.textContent = secondInput;
+        replaceDisplay = false;
+        showingResult = false;
+        return; 
     }
     
-    if (replaceDisplay) return;
+    if (showingResult) {
+        result= 0;
+        currentDisplay.textContent = secondInput;
+        showingResult =  false;
+        return;
+    }
+
+    if (currentDisplay.textContent === "+" || currentDisplay.textContent === "—" || currentDisplay.textContent === "X" || currentDisplay.textContent === "÷") {
+        operatorInput = null;
+        currentDisplay.textContent = firstInput;
+    }else if (replaceDisplay=== false){
     currentDisplay.textContent = currentDisplay.textContent.slice(0,-1);
+    }else if (currentDisplay.textContent === firstInput) {
+        firstInput =null;
+        currentDisplay.textContent = "0";
+    }
 
     if(currentDisplay.textContent === "") {
         currentDisplay.textContent = operatorInput;
         replaceDisplay = true;
     }
 
+
+    
+    
+
+// solve continous del to go back to intial state 
    
-});
+}); 
+
+
+
+//solve large nmber relation to display box
