@@ -14,6 +14,26 @@ let showingResult = false;
 let result = 0;
 let canCalculate = false;
 
+let canBypass = false; //the = button cant function if C reset is pressed
+
+
+
+//input fontsize handling
+
+function updateFontSize () {
+
+if (currentDisplay.textContent.length >= 15){
+    currentDisplay.style.fontSize="50px";
+}else if (currentDisplay.textContent.length >=10) {
+    currentDisplay.style.fontSize="70px";
+}else {
+    currentDisplay.style.fontSize="80px";
+}
+}
+
+
+
+
 //number input
 for (let i=0; i<nbuttons.length; i++) {
     nbuttons[i].addEventListener("click" , (e)=> {
@@ -27,9 +47,14 @@ for (let i=0; i<nbuttons.length; i++) {
         replaceDisplay = false;
         
     }
+    //input limit
+        if (currentDisplay.textContent.length >=16) return;
+
     currentDisplay.textContent +=(e.target.textContent);
     canCalculate = true;
-        
+        updateFontSize ()
+
+            
     })  
 }
 
@@ -37,11 +62,22 @@ for (let i=0; i<nbuttons.length; i++) {
 
 for (let i=0; i<operatorButtons.length  ; i++) {
     operatorButtons[i].addEventListener("click" , (e)=> {
+        if (
+    currentDisplay.textContent === "+" ||
+    currentDisplay.textContent === "—" ||
+    currentDisplay.textContent === "X" ||
+    currentDisplay.textContent === "÷"
+) {
+    operatorInput = e.target.textContent;
+    currentDisplay.textContent = operatorInput;
+    return;
+}
 
         firstInput = currentDisplay.textContent;
         replaceDisplay = true;
          operatorInput = e.target.textContent;
          currentDisplay.textContent = operatorInput;
+         canBypass = true;
          
         
     })
@@ -75,6 +111,7 @@ function divide (a,b) {
 calculateBtn.addEventListener("click" , () => {
 
     if (!canCalculate) return; 
+    if (!canBypass) return;
     
     secondInput = currentDisplay.textContent; 
     let fnum = Number(firstInput);
@@ -97,12 +134,14 @@ calculateBtn.addEventListener("click" , () => {
 
     if (Number.isInteger(result)) {
         currentDisplay.textContent = result;
+        updateFontSize ();
         
     }else if (result === "error") {
         currentDisplay.textContent = "error";
     }
     else {
         currentDisplay.textContent= result.toFixed(4);
+        updateFontSize ();
         
     } 
 
@@ -122,6 +161,10 @@ resetBtn.addEventListener("click", ()=> {
     secondInput = null;
     replaceDisplay= true;
     currentDisplay.textContent= "0";
+    updateFontSize ()
+    canCalculate = false;
+    canBypass=false;
+
 })
 
 let eraseBtn = document.querySelector("#erase");
@@ -160,12 +203,10 @@ eraseBtn.addEventListener("click" , ()=> {
 
 
     
-    
+    updateFontSize ()
 
-// solve continous del to go back to intial state 
-   
+
 }); 
 
 
 
-//solve large nmber relation to display box
